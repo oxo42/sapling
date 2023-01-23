@@ -18,6 +18,7 @@ import {
 import * as lifecycle from './serverLifecycle';
 import child_process from 'child_process';
 import crypto from 'crypto';
+import {safeWhichSync} from 'shared/safeWhich';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -647,7 +648,7 @@ function maybeOpenURL(url: URL): void {
   // Note that if openCommand does not exist on the host, this will fail with
   // ENOENT. Often, this is fine: the user could start isl on a headless
   // machine, but then set up tunneling to reach the server from another host.
-  const child = child_process.spawn(openCommand, args, {
+  const child = child_process.spawn(safeWhichSync(openCommand), args, {
     detached: true,
     stdio: 'ignore' as IOType,
     windowsHide: true,
